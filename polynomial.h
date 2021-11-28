@@ -47,8 +47,9 @@ private:
   Term *head; // a pointer to the doubly-linked circular list of
               // sparse polynomial
 
-  bool insert(Term *pos, const double newCoefficient, const int power);
-  bool remove(Term *pos);
+  bool insert(Term *posBeforeInsert, const double newCoefficient, const int power);
+  bool remove(Term *posToRemove);
+  Term *getPositionBefore(const int power) const;
 };
 
 #endif
