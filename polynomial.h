@@ -49,6 +49,7 @@ private:
 
   bool insert(Term *posBeforeInsert, const double newCoefficient, const int power);
   bool remove(Term *posToRemove);
+  bool clearAllTerms();
   Term *getPositionBefore(const int power) const;
 };
 

@@ -14,12 +14,35 @@ Polynomial::Polynomial()
 }
 
 Polynomial::Polynomial(const Polynomial &p)
+    : size(0), head(new Term)
 {
+    head->coeff = 0.0;
+    head->power = 0;
+    head->prev = head;
+    head->next = head;
+
+    if (p.size > 0) // only copy if the polynomial is not empty
+    {
+        Term *currentPtr = p.head->next; // pointer at the first term to copy
+        while (size < p.size)
+        {
+            changeCoefficient(currentPtr->coeff, currentPtr->power);
+            currentPtr = currentPtr->next;
+        }
+        currentPtr = nullptr;
+    }
 }
 
 Polynomial::~Polynomial()
 {
+    clearAllTerms();
+    // clear head
+    delete head;
+    head = nullptr;
+}
 
+bool Polynomial::clearAllTerms()
+{
     Term *currentPtr = head->next; // set to first term
 
     // remove all terms
@@ -29,21 +52,58 @@ Polynomial::~Polynomial()
         remove(currentPtr->prev);      // remove the previous term in chain
     }                                  // at the end of loop currentPtr should be back to head
 
-    // clear pointers
-    delete currentPtr;
     currentPtr = nullptr;
-    head = nullptr;
+    return true;
 }
 
+// rules:
+// 1. term with zero coef will not print
+// 2. empty polynomial will show as zero
+// 3. term with 1 coef will only show x^n
+// 4. term with 1 power will only show x
 ostream &operator<<(ostream &output, const Polynomial &p)
 {
-    Term *currentPtr = p.head->next;
-    cout << currentPtr->prev->coeff << "x^" << currentPtr->prev->power;
-    while (currentPtr != p.head)
+    if (p.size < 1) // empty polynomial print 0
     {
-        cout << " + ";
-        cout << currentPtr->coeff << "x^" << currentPtr->power;
+        output << " 0";
+        return output;
+    }
+    else // polynomial with at least 1 terms
+    {
+        // print the first term
+        Term *currentPtr = p.head->next;
+        output << currentPtr->coeff << "x^" << currentPtr->power;
+
+        // print the rest
+        string sign = "";
         currentPtr = currentPtr->next;
+        while (currentPtr->coeff != 0) // stop when loop to head again
+        {
+            sign = currentPtr->coeff < 0 ? " - " : " + "; // predetermine sign
+            output << sign;
+
+            if (currentPtr->coeff == 1 && currentPtr->power == 1) // 1x^1 print x
+            {
+                output << "x";
+            }
+            else if (currentPtr->power == 0) // Cx^0 print C
+            {
+                output << currentPtr->coeff;
+            }
+            else if (currentPtr->coeff == 1) // 1x^n print x^n
+            {
+                output << "x^" << currentPtr->power;
+            }
+            else if (currentPtr->power == 1) // Cx^1 print Cx
+            {
+                output << currentPtr->coeff << "x";
+            }
+            else // print Cx^n
+            {
+                output << abs(currentPtr->coeff) << "x^" << currentPtr->power;
+            }
+            currentPtr = currentPtr->next;
+        }
     }
     return output;
 }
@@ -68,7 +128,7 @@ double Polynomial::coefficient(const int power) const
             return currentPtr->next->coeff;
         }
     }
-    return 0.0; // no other term except head
+    return 0.0; // no other term or term with power passed does not exist
 }
 
 // handle 4 cases:
@@ -87,7 +147,11 @@ bool Polynomial::changeCoefficient(const double newCoefficient, const int power)
 
     Term *currentPtr = getPositionBefore(power);
 
-    if (currentPtr->next->power == power && newCoefficient != 0) // case 2
+    if (currentPtr->next == head && newCoefficient != 0) // special case where added term has power 0
+    {
+        insert(currentPtr->next, newCoefficient, power);
+    }
+    else if (currentPtr->next->power == power && newCoefficient != 0) // case 2
     {
         currentPtr->next->coeff = newCoefficient;
     }

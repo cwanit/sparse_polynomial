@@ -1,5 +1,6 @@
 #include "polynomial.h"
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 int main()
@@ -7,6 +8,7 @@ int main()
 
     //  Testing Default Constructor
     Polynomial p1;
+    cout << "p1 =" << p1 << endl;
 
     //  Testing changeCoefficient mutator
     p1.changeCoefficient(1, 1);    // implicit convert coef to double. Should not print coef.
@@ -29,6 +31,13 @@ int main()
     cout << "p1 = " << p1 << endl;
     p1.changeCoefficient(25.3, 2); // should change coef of power 2
     cout << "p1 = " << p1 << endl;
+    p1.changeCoefficient(6.1, 0); // should add a term at the end
+    cout << "p1 = " << p1 << endl;
+    p1.changeCoefficient(5.2, 0); // should add a term at the end
+    cout << "p1 = " << p1 << endl;
+
+    Polynomial p2(p1);
+    cout << "p2 = " << p2 << endl;
 }
 //     //  Testing copy constructor
 //     Polynomial p2 = p1;
