@@ -38,6 +38,13 @@ int main()
 
     Polynomial p2(p1);
     cout << "p2 = " << p2 << endl;
+
+    Polynomial p3;
+    p3.changeCoefficient(3.2, 5);
+    p3.changeCoefficient(3, 4);
+
+    p1 -= p3;
+    cout << "p1 += p3 is " << p1 << endl;
 }
 //     //  Testing copy constructor
 //     Polynomial p2 = p1;

@@ -64,6 +64,44 @@ bool Polynomial::clearAllTerms()
     return true;
 }
 
+Polynomial &Polynomial::operator+=(const Polynomial &p)
+{
+    if (p.size > 0)
+    {
+        Term *anotherPolyPtr = p.head->next; // point to the first term of p
+        double currentCoeff = 0.0;
+        while (anotherPolyPtr != p.head)
+        {
+            currentCoeff = coefficient(anotherPolyPtr->power); // find current coefficient
+
+            // add coefficient from p
+            changeCoefficient(currentCoeff + anotherPolyPtr->coeff, anotherPolyPtr->power);
+            anotherPolyPtr = anotherPolyPtr->next;
+        }
+        anotherPolyPtr = nullptr;
+    }
+    return *this;
+}
+
+Polynomial &Polynomial::operator-=(const Polynomial &p)
+{
+    if (p.size > 0)
+    {
+        Term *anotherPolyPtr = p.head->next; // point to the first term of p
+        double currentCoeff = 0.0;
+        while (anotherPolyPtr != p.head)
+        {
+            currentCoeff = coefficient(anotherPolyPtr->power); // find current coefficient
+
+            // add coefficient from p
+            changeCoefficient(currentCoeff - anotherPolyPtr->coeff, anotherPolyPtr->power);
+            anotherPolyPtr = anotherPolyPtr->next;
+        }
+        anotherPolyPtr = nullptr;
+    }
+    return *this;
+}
+
 // rules:
 // 1. term with zero coef will not print
 // 2. empty polynomial will show as zero
