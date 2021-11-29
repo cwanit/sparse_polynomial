@@ -4,32 +4,17 @@ using namespace std;
 Polynomial::Polynomial()
     : size(0), head(new Term)
 {
-    head->coeff = 0.0;
-    head->power = 0;
-
-    // initialize to point at itself since this class assumes it will not have to
-    // deal with nullptr;
-    head->prev = head;
-    head->next = head;
+    init();
 }
 
 Polynomial::Polynomial(const Polynomial &p)
     : size(0), head(new Term)
 {
-    head->coeff = 0.0;
-    head->power = 0;
-    head->prev = head;
-    head->next = head;
+    init();
 
     if (p.size > 0) // only copy if the polynomial is not empty
     {
-        Term *currentPtr = p.head->next; // pointer at the first term to copy
-        while (size < p.size)
-        {
-            changeCoefficient(currentPtr->coeff, currentPtr->power);
-            currentPtr = currentPtr->next;
-        }
-        currentPtr = nullptr;
+        copyAnotherPolynomial(p);
     }
 }
 
@@ -39,6 +24,29 @@ Polynomial::~Polynomial()
     // clear head
     delete head;
     head = nullptr;
+}
+
+// pre: head is declared
+bool Polynomial::init()
+{
+    head->coeff = 0.0;
+    head->power = 0;
+    head->prev = head;
+    head->next = head;
+    return true;
+}
+
+bool Polynomial::copyAnotherPolynomial(const Polynomial &p)
+{
+
+    Term *currentPtr = p.head->next; // pointer at the first term to copy
+    while (size < p.size)
+    {
+        changeCoefficient(currentPtr->coeff, currentPtr->power);
+        currentPtr = currentPtr->next;
+    }
+    currentPtr = nullptr;
+    return true;
 }
 
 bool Polynomial::clearAllTerms()

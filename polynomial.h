@@ -50,6 +50,8 @@ private:
   bool insert(Term *posBeforeInsert, const double newCoefficient, const int power);
   bool remove(Term *posToRemove);
   bool clearAllTerms();
+  bool copyAnotherPolynomial(const Polynomial &p);
+  bool init();
   Term *getPositionBefore(const int power) const;
 };
 
