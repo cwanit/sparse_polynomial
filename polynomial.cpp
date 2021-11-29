@@ -64,6 +64,56 @@ bool Polynomial::clearAllTerms()
     return true;
 }
 
+Polynomial Polynomial::operator+(const Polynomial &p) const
+{
+    Polynomial result = *this; // make a copy of myself
+    result += p;               // use += to add to the copy
+    return result;
+}
+
+Polynomial Polynomial::operator-(const Polynomial &p) const
+{
+    Polynomial result = *this; // make a copy of myself
+    result -= p;               // use -= to subtract from the copy
+    return result;
+}
+
+bool Polynomial::operator==(const Polynomial &p) const
+{
+    if (p.size != size) // not equal if size is not the same
+    {
+        return false;
+    }
+    else // step thru each term, if either coef or power is not the same return false
+    {
+        Term *anotherPolyPtr = p.head->next; // point to the first term in p
+        Term *currentPtr = head->next;       // point to the first time in this polynomial
+        while (currentPtr != head)
+        {
+            if ((currentPtr->coeff != anotherPolyPtr->coeff) || (currentPtr->power != anotherPolyPtr->power))
+            {
+                return false;
+            }
+        }
+    }
+    return true; // if pass both tests then they are equal
+}
+
+bool Polynomial::operator==(const Polynomial &p) const
+{
+    return !(*this == p);
+}
+
+Polynomial &Polynomial::operator=(const Polynomial &p)
+{
+    if (*this != p)
+    {
+        clearAllTerms();          // clear the current chain
+        copyAnotherPolynomial(p); // replace the current chain with items copied from p
+    }
+    return *this;
+}
+
 Polynomial &Polynomial::operator+=(const Polynomial &p)
 {
     if (p.size > 0)

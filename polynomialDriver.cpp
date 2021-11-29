@@ -42,10 +42,24 @@ int main()
     Polynomial p3;
     p3.changeCoefficient(3.2, 5);
     p3.changeCoefficient(3, 4);
+    p3.changeCoefficient(3.0, 0);
+
+    p1 += p3;
+    cout << "p1 += p3 is " << p1 << endl;
 
     p1 -= p3;
-    cout << "p1 += p3 is " << p1 << endl;
+    cout << "p1 -= p3 is " << p1 << endl;
 }
+
+/**
+ * equality test
+ * 1.) different size
+ * 2.) same size, same exact terms
+ * 3.) same size, same power, different coeff
+ * 4.) same size, same coeff, different power
+ *
+ */
+
 //     //  Testing copy constructor
 //     Polynomial p2 = p1;
 
