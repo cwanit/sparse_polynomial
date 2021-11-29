@@ -94,12 +94,16 @@ bool Polynomial::operator==(const Polynomial &p) const
             {
                 return false;
             }
+            anotherPolyPtr = anotherPolyPtr->next;
+            currentPtr = currentPtr->next;
         }
+        anotherPolyPtr = nullptr;
+        currentPtr = nullptr;
     }
     return true; // if pass both tests then they are equal
 }
 
-bool Polynomial::operator==(const Polynomial &p) const
+bool Polynomial::operator!=(const Polynomial &p) const
 {
     return !(*this == p);
 }
@@ -161,7 +165,7 @@ ostream &operator<<(ostream &output, const Polynomial &p)
 {
     if (p.size < 1) // empty polynomial print 0
     {
-        output << " 0";
+        output << "0";
         return output;
     }
     else // polynomial with at least 1 terms
